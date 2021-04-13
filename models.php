@@ -32,7 +32,7 @@
             $sql = "insert into $table ";
             $field = [];
             foreach(self::$model as $k=>$v){
-                if($k == "table" OR $k == "id") {continue;}
+                if($k == "table" || $k == "id") {continue;}
                 $field["`".$k."`"] = self::vartype($v);
 
             }
@@ -65,7 +65,7 @@
             $sql = "update $table SET ";
             $field = [];
             foreach(self::$model as $k=>$v){
-                if($k == "table" OR $k == "id") {continue;}
+                if($k == "table" || $k == "id") {continue;}
                 if(empty($v)) {continue;}
                 $field["`".$k."`"] = self::vartype($v);
             }
@@ -73,27 +73,31 @@
             $sql.=" WHERE id=".self::$model->id;
             return $sql;
         }
-        public static function delete(){
+        public static function delete($find="id",$field="id"){
             $table = self::$model->table;
             $sql = "delete from $table ";
-            $sql.=" WHERE id=".self::$model->id;
+            $sql.=" WHERE $field=".($find == "id" ? self::$model->id : $find );
             return $sql;
         }
         public static function toarray(){
             return (array)self::$model;
         }
-        public static function find($id){
+        public static function find($find,$field="id"){
             global $db;
             $table = self::$model->table;
             $sql = "select * from $table ";
-            $sql.=" WHERE id=".$id;
+            $sql.=" WHERE $field=".$find;
             $s = $db->query($sql);
             if($s->rowCount() == 0) {return self::$model;}
-            $s = $s->fetch(PDO::FETCH_ASSOC);
-            foreach($s as $k=>$v) {
-                self::$model->$k = $v;
+            $models = [];
+            while($k = $s->fetch(PDO::FETCH_ASSOC)){
+                $clone  = (array)self::$model;
+                foreach($k as $x=>$y){
+                    $clone[$x] = $y;
+                }
+                $models[] =(object) $clone;
             }
-            return self::$model;
+            return  (count($models) == 1 ? $models[0] : $models);
         }
 
     }
