@@ -6,7 +6,7 @@ PHP için  veritabanı tablolarını , JSON modellere dönüştürüp üzerinde 
 Sınıf için öncelikle bir veritabanı bağlamalısınız.
 
 
-#ÇAĞIRIM
+# ÇAĞIRIM
 Static sınıftır, çağırımı kolaydır.
 Örnek;
 models::get("user")
