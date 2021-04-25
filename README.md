@@ -42,6 +42,21 @@ Model üzerinde işlemler yapılıp, sadece "update" zinciri kurulması yeterlid
 Dönüş olarak başarılı işlem "true", başarısız işlem Hata mesajı döner.
 
 Önek :
+
 $user : models::get("user")->find("testuser");
+
 $user->password = md5("010101");
+
 $user->update();
+
+# DELETE
+Model üzerinde işlemler yapılıp, sadece "delete" zinciri kurulması yeterlidir. 
+Dönüş olarak başarılı işlem "true", başarısız işlem Hata mesajı döner.
+
+Önek :
+
+$user : models::get("user")->delete(1,"id");
+
+
+
+
