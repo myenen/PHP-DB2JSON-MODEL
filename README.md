@@ -10,6 +10,7 @@ Sınıf için öncelikle bir veritabanı bağlamalısınız.
 Static sınıftır, çağırımı kolaydır.
 
 Örnek;
+
 models::get("user")
 
 # FIND
@@ -19,6 +20,7 @@ Tek kayıt bulunmuşsa model olarak döner.
 Birden çok kayıt array model olarak döner.
 
 Örnek:
+
 models::get("user")->find("test","username");
 
 # SAVE
@@ -26,9 +28,13 @@ Model üzerinde işlemler yapılıp, sadece "save" zinciri kurulması yeterlidir
 Dönüş olarak "lastinsertid" döner.
 
 Önek :
+
 $user : models::get("user");
+
 $user->username = "test user";
+
 $user->password = md5("010101");
+
 $user->save();
 
 # UPDATE
