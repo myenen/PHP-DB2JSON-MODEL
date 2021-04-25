@@ -15,7 +15,7 @@ models::get("user")
 
 # FILTER
 Model çağırımında, dönüş olarak , tüm modelin değilde istenen verilerin dönemsini sağlar.
-Filter parametrei array verilmelidir.
+Filter parametresi array verilmelidir.
 
 Önek :
 
