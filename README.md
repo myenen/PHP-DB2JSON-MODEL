@@ -13,6 +13,14 @@ Static sınıftır, çağırımı kolaydır.
 
 models::get("user")
 
+# FILTER
+Model çağırımında, dönüş olarak , tüm modelin değilde istenen verilerin dönemsini sağlar.
+Filter parametrei array verilmelidir.
+
+Önek :
+
+$user : models::get("user")->filter(["id","username"]);
+
 # FIND
 Tablo sütün, parametresi verilebilir, verilmezse "id" üzerinde arama yapar. 
 Sonuç bulunmazsa "false" döner.
