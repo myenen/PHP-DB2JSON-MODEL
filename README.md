@@ -29,7 +29,7 @@ Static sınıftır, çağırımı kolaydır.
 models::get("user")
 
 # FILTER
-Model çağırımında, dönüş olarak , tüm modelin değilde istenen verilerin dönemsini sağlar.
+Model çağırımında, dönüş olarak , tüm modelin değilde istenen verilerin dönmesini sağlar.
 Filter parametresi array verilmelidir.
 
 Önek :
