@@ -4,6 +4,21 @@ PHP için  veritabanı tablolarını , JSON modellere dönüştürüp üzerinde 
 
 # DB
 Sınıf için öncelikle bir veritabanı bağlamalısınız.
+Dışarıdan parametre olarakta alabilir, ancak "construct"ta tanımlamak daha pratik olacaktır.
+
+Örnek;
+
+
+function __construct(){
+
+
+	global $db;
+  
+  
+	self::$db = $db;
+  
+  
+}
 
 
 # START
