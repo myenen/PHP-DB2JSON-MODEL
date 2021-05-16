@@ -3,10 +3,15 @@
         public static $model    = "";
         public static $db       = "";
         function __construct(){
+            self::db();
+        }
+        public static function db(){
             global $db;
             self::$db = $db;
+            return self::$db;
         }
         public static function get($name){
+            $db = self::db();
             if(file_exists(__DIR__."/models/".$name.".model.php"))  {
                 include_once(__DIR__."/models/".$name.".model.php");
             }else {
@@ -90,10 +95,12 @@
             return true;
         }
         public static function delete($find="id",$field="id"){
+            $db = self::$db;
             $table = self::$model->table;
             $sql = "delete from $table ";
             $sql.=" WHERE $field=".($find == "id" ? self::$model->id : $find );
-            return $sql;
+            if(!$sql) {return (object)array_merge(["error" => true],$db->errorInfo());}
+            return true;
         }
         public static function toarray(){
             return (array)self::$model;
@@ -110,20 +117,39 @@
 
         }
 
-        public static function find($find,$field="id"){
+        public static function findall($field="id",$orderby="DESC",$limit=10){
             $db = self::$db;
             $table = self::$model->table;
             $sql = "select * from $table ";
-            $sql.=" WHERE $field=".self::vartype($find);
+            $sql.=" order by  $field $orderby LIMIT $limit";
             $s = $db->query($sql);
             if($s->rowCount() == 0) {return false;}
             $models = [];
             while($k = $s->fetch(PDO::FETCH_ASSOC)){
-                $clone  = (array)self::$model;
+                $clone  = [];
                 foreach($k as $x=>$y){
-                    $clone[$x] = empty($y) ? "":$y;
+                    $clone[$x] = empty($y) ? "" : $y;
                 }
-                $models[] =(object) $clone;
+                $models[] = (object)$clone;
+            }
+            return  (count($models) == 1 ? self::fill($models[0]) : $models);
+        }
+
+        public static function find($find,$field="id",$orderby="DESC"){
+            $db = self::$db;
+            $table = self::$model->table;
+            $sql = "select * from $table ";
+            $sql.=" WHERE $field=".self::vartype($find);
+            $sql.=" order by  $field $orderby";
+            $s = $db->query($sql);
+            if($s->rowCount() == 0) {return false;}
+            $models = [];
+            while($k = $s->fetch(PDO::FETCH_ASSOC)){
+                $clone  = [];
+                foreach($k as $x=>$y){
+                    $clone[$x] = empty($y) ? "" : $y;
+                }
+                $models[] = (object)$clone;
             }
             return  (count($models) == 1 ? self::fill($models[0]) : $models);
         }
@@ -131,7 +157,7 @@
         public static function fill($data=""){
 
             $model = self::$model;
-            foreach($model as $k=>$v){
+            foreach($data as $k=>$v){
                 $model->$k = $data->$k;
             }
             return $model;
